@@ -10,4 +10,14 @@ As an AI professional, I'm excited to share that I'm developing a new optimizati
 - The library will support single-objective reinforcement learning, multi-objective reinforcement learning, supervised learning, and multi-objective supervised learning, all through a single, user-friendly interface.
 
 
-  
+To do
+- Implement class called Function allowing to fit any multi-objective function by adding objectives.✅ 
+- Implement supervised example case on how to use function class ✅
+- Implement Reinforcement learning example for function ✅ 
+- Implement CompositeFunction class ✅
+- Implement reinforcement learning example for CompositeFunction class ✅
+- Implement the reporting module to visualize the found pareto front❌ 
+- Implement the dmn input and output layer to convert function from and to dmn❌ 
+- Setup pypi package, requirements file❌ 
+- Make unit tests❌ 
+- document classes in code❌ 
