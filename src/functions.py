@@ -3,6 +3,7 @@ from evotorch import Problem
 from evotorch.operators import SimulatedBinaryCrossOver, GaussianMutation
 from evotorch.logging import StdOutLogger
 import torch.nn as nn
+from collections.abc import Iterable
 
 from src.geneticAlgorithms import SteadyStateGAWithEarlyStopping
 from src.neuralNetworkEstimator import NeuralNetwork
@@ -47,7 +48,7 @@ class Function:
         if weights is not None:
             self.model.set_weights(weights.clone())
 
-    def add_objective(self, objective_func, maximize=False):
+    def add_objective(self, objective_func, maximize=False, size=1):
         """
         Adds an objective function to the optimization process.
 
@@ -55,9 +56,11 @@ class Function:
         """
         self.objectives.append(objective_func)
         if maximize:
-            self.maximizeOrMinimize.append("max")
+            for i in range(size):
+                self.maximizeOrMinimize.append("max")
         else:
-            self.maximizeOrMinimize.append("min")
+            for i in range(size):
+                self.maximizeOrMinimize.append("min")
 
 
 
@@ -68,14 +71,19 @@ class Function:
         :param weights: Torch tensor, the weights to be set in the neural network model for evaluation.
         :return: Torch tensor, the computed fitness scores.
         """
-        fitness_scores = [[] for o in self.objectives]
+        fitness_scores = [[] for o in self.maximizeOrMinimize]
         for x in weights:
             self.model.set_weights(x.clone())
             i=0
             for objective in self.objectives:
                 score = objective(self.model)
-                fitness_scores[i].append(score)
-                i+=1
+                if isinstance(score, Iterable)and len(score)>1:
+                    for s in score:
+                        fitness_scores[i].append(s)
+                        i += 1
+                else:
+                    fitness_scores[i].append(score)
+                    i+=1
         if len(fitness_scores)>0:
             return   torch.stack([torch.tensor(f) for f in fitness_scores], dim=-1)
         else:
@@ -112,10 +120,10 @@ class Function:
                                      eta=eta))
         ga.use(GaussianMutation(problem ,stdev=stdev))
         logger = StdOutLogger(ga)
-        best ,steps = ga.run(num_generations)
+        best ,steps = ga.run(num_generations,self.evaluate_fitness)
         resultingWeights = ga.population.values
         fitnesses = self.evaluate_fitness(resultingWeights)
-        return resultingWeights,fitnesses
+        return ga.weights,ga.fitnesses
 
 
 

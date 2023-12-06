@@ -3,7 +3,7 @@ import torch.nn as nn
 class NeuralNetwork:
     """ A modular neural network class for easy customization and extension. """
 
-    def __init__(self, input_size, output_size, hidden_size=10, depth=2):
+    def __init__(self, input_size, output_size, hidden_size=4, depth=1):
         self.input_size = input_size
         self.output_size = output_size
         self.hidden_size = hidden_size

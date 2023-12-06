@@ -16,6 +16,7 @@ To do
 - Implement Reinforcement learning example for function ✅ 
 - Implement CompositeFunction class ✅
 - Implement reinforcement learning example for CompositeFunction class ✅
+- Implement multi-objective reinforcement learning example ✅
 - Implement the reporting module to visualize the found pareto front❌ 
 - Implement the dmn input and output layer to convert function from and to dmn❌ 
 - Setup pypi package, requirements file❌ 
